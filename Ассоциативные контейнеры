@@ -1,0 +1,113 @@
+//
+//  main.cpp
+//  Laba Asociativnue konteyneru
+//
+//  Created by гера on 27.12.16.
+//  Copyright © 2016 GeorgeBur. All rights reserved.
+//
+
+
+#include <fstream>
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main()
+{
+    string a;
+    string b;
+    int ch;
+    cout<<"console = 1 \nfile = 2:";
+    cin>>ch;
+    
+    if (ch==1)
+    {
+        cout<<"how many pairs ?";
+        int size;
+
+        cin>>size;
+        multimap < string,string> Laba8;
+        for (int i = 0; i < size; i++)
+        {
+            cout << "misto: " << endl;
+            cin>>a;
+            cout << "kraina: " << endl;
+            cin>>b;
+            Laba8.insert(make_pair(a,b));
+        }
+        cout << "Laba8 Misto:Kraina\n";
+        
+        multimap<string,string> :: iterator it ;
+        for (it = Laba8.begin();  it!=Laba8.end(); it++)
+        {
+            cout << it->first << " : " << it->second << endl;
+        }
+        
+        cout << "give me Misto:\n"<<endl;
+        
+        cin>>a;
+        for (it = Laba8.find(a); it != Laba8.end(); it++)
+        {
+            cout << "kraina : " << it->second << endl;
+        }
+        
+        cout << "give me kraina:\n"<<endl;
+        
+        cin>>b;
+        for (it = Laba8.begin(); it != Laba8.end(); it++)
+            if (it->second==b)
+        {
+            cout << "misto : " << it->first << endl;
+        }
+    }
+    
+    
+    if (ch==2)
+    
+    {
+        string a;
+        string b;
+        
+        fstream F("/Users/gera/Desktop/c++/2 kurs/Laba8 Asociativnue konteyneru/Test.txt");
+        multimap < string,string> Laba89;
+
+        while (! F.eof())
+        {
+            F>>a;
+            F>>b;
+            
+            Laba89.insert(pair< string,string>(a,b));
+        }
+        
+        for (multimap <string,string>::iterator it = Laba89.begin(); it != Laba89.end(); ++it)
+        {cout << it->first << " : "<< it->second << endl;}
+        F.close();
+
+        
+        multimap<string,string> :: iterator it ;
+        
+        cout << "give me Kraina:  " << endl;
+        cin>>a;
+        it = Laba89.find(a);
+        for (int i = 0; i<Laba89.count(a); i++) {
+            cout << "Misto : " << it->second << endl;
+            it++;
+        }
+        
+        
+        cout << "give me misto:  " << endl;
+        cin>>b;
+        for (it = Laba89.begin(); it!= Laba89.end(); it++) {
+            if (it->second==b) {
+                cout << "Kraina : "   << it->first << endl;
+            }
+        }
+        
+        
+        }else return 0;
+
+}
+
+    
+    
+
