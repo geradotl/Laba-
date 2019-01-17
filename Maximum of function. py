@@ -1,0 +1,114 @@
+import matplotlib.pyplot as plt
+plt.rcParams['image.cmap'] = 'gray'
+plt.rcParams['image.interpolation'] = 'nearest'
+import numpy as np
+
+
+def ackley(x1,x2):
+    a = 20
+    b = 0.2
+    c = 2*np.pi
+    sum1 = x1**2 + x2**2
+    sum2 = np.cos(c*x1) + np.cos(c*x2)
+    term1 = - a * np.exp(-b * ((1/2.) * sum1**(0.5)))
+    term2 = - np.exp((1/2.)*sum2)
+    return term1 + term2 + a + np.exp(1)
+
+def beale(x1,x2):
+    sum1 = (1.5 - x1 + x1*x2)
+    sum2 = (2.25 - x1 + x1*x2**2.0)
+    sum3 = (2.625 - x1 + x1*x2**3.0)
+    term1 = (sum1**2) + (sum2**2) +(sum3**2)
+    return term1
+
+
+def sphere(x1,x2):
+    return x1**2 + x2**2
+
+
+def bukin(x1,x2):
+    return 100*np.sqrt(np.abs(x2-0.01*x1**2)) + 0.01*np.abs(x1 + 10)
+
+def bohachevsky(x1,x2):
+    return x1**2 + 2*x2**2 - 0.3*np.cos(3*np.pi*x1) - 0.4*np.cos(4*np.pi*x2) + 0.7
+
+def booth(x1,x2):
+    return (x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2
+
+def matyas(x1,x2):
+    return 0.26*sphere(x1,x2) - 0.48*x1*x2
+
+def mccormick(x1,x2):
+    return np.sin(x1 + x2) + (x1 - x2)**2 - 1.5*x1 + 2.5*x2 + 1
+
+def six_hump_camel(x1,x2):
+    return (4 - 2.1*x1**2 + x1**4/3)*x1**2 + x1*x2 + (-4 + 4*x2**2)*x2**2
+
+def rastrigin(x1,x2):
+    return 20 + (x1**2 - 10*np.cos(2*np.pi*x1)) + (x2**2 - 10*np.cos(2*np.pi*x2))
+
+def rosenbrock(x1,x2):
+    return 100.0*(x1 - x2**2.0)**2.0 + (x1 - 1.0)**2.0
+
+def levie(x1,x2):
+    return (x1 - 1)**2*(np.sin(3 * np.pi * x2) ** 2 + 1) + (x2 - 1) ** 2 * \
+            (np.sin(2 * np.pi * x2) ** 2 + 1) + np.sin(3 * np.pi * x1) ** 2
+
+
+
+# generate a toy 2D regression dataset
+sz = 125
+X,Y = np.meshgrid(np.linspace(-10,10,sz),np.linspace(-10,10,sz))
+
+# G=ackley(X,Y)
+G = matyas(X,Y)
+
+np.random.seed(3)
+nn = 5 # number of steps to take (and plot horizontally
+alpha = 0.1 # learning rate
+sigma = 8 # standard deviation of the samples around current parameter vector
+
+w = np.array([62.5, 62.5]) # start point
+plt.figure(figsize=(20,5))
+
+prevx, prevy = [], []
+for q in range(nn):
+
+    # draw the optimization landscape
+    ax1 = plt.subplot(1,nn,q+1)
+
+    plt.imshow(G, vmin=-10, vmax=100, cmap='jet')
+
+    # draw a population of samples in black
+    noise = np.random.randn(200, 2)
+    wp = np.expand_dims(w, 0) + sigma*noise
+    x,y = zip(*wp)
+    # print(*wp)
+
+    plt.scatter(x,y,4,'k', edgecolors='face')
+
+    # draw the current parameter vector in white
+    plt.scatter([w[0]],[w[1]],40,'w', edgecolors='face')
+
+    # draw estimated gradient as white arrow
+    R = np.array([G[int(wi[0]), int(wi[1])] for wi in wp])
+    R -= R.mean()
+    R /= R.std() # standardize the rewards to be N(0,1) gaussian
+    g = np.dot(R, noise)
+    u = alpha * g
+    plt.arrow(w[0], w[1], u[0], u[1], head_width=3, head_length=5, fc='w', ec='w')
+    plt.axis('on')
+    plt.title('iteration %d, reward %.2f' % (q+1, G[int(w[0]), int(w[1])]))
+
+
+    # draw the history of optimization as a white line
+    prevx.append(w[0])
+    prevy.append(w[1])
+    if len(prevx) > 0:
+        plt.plot(prevx, prevy, 'wo-')
+
+    w += u
+    plt.axis('tight')
+
+plt.savefig('evo.png',bbox_inches='tight',pad_inches=0,dpi=200)
+
