@@ -1,0 +1,51 @@
+int main()
+{   char S[15]="dfdfare*bc*";
+    char T[10];
+    bool exitflag=false;
+    int choice;
+    cout<<"input number of task, or \"0\" to exit"<<endl;
+    cin>>choice;
+    char * place;
+    
+if (choice ==1)
+    {
+                place = strstr(S, "are");
+                strcpy(place, place+3);
+                cout << S<<endl;
+    }
+    
+if (choice ==2)
+    {
+                place = strchr(S,'a');
+                strncpy(T, place+1, 6);
+                *(place+1)='b';
+                *(place+2)='c';
+                strcpy(place+3, T);
+                cout << S<<endl;
+    }
+    
+if (choice==3)
+    {
+                place = strchr(S, 'a');
+                strncpy(T, place+1, 6);
+                cout << T<<endl;
+    }
+    
+if (choice==4)
+    {
+        do{
+            place=strchr(S, '*');
+            if(place)
+            strcpy(place, place+1);
+    }
+      while(!place);
+      if(S[strlen(S)-1]=='*') S[strlen(S)-1]='\0';//if the last char is "*" - delete it
+        cout<<S<<endl;
+    }
+      
+
+if (choice==0) {
+        exitflag=true;
+    }
+    return 0;
+}
