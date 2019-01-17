@@ -1,0 +1,403 @@
+#include «func.h»
+int main(){
+    cout<<"list or stack (1 or 2)"<<endl;
+    int choose=0;
+    cin>>choose;
+    if(choose>2||choose<1) cout<<"Uncorrect number!"<<endl;
+    if (choose==2){
+        create_stack();
+        view_stack();
+        int temp;
+        cout<<"Write the element, which you want to add in the end:";
+        cin>>temp;
+        Add_end_stack(temp);
+        view();
+        cout<<"Will delete the last element:"<<endl;
+        Delete_end_stack();
+        view_stack();
+    }
+    if (choose==1){
+        create();
+        view();
+        counter();
+        cout<<"Number of elements:"<<counter()<<endl;
+        int middle_of_list=0;
+        middle_of_list=counter()/2;
+        cout<<"Middle of the list:"<<middle_of_list+1<<endl;
+        arif();
+        int temp=0,temp1=0;
+        
+        cout<<"add element in the end press 1, in the middle of list 2:";
+        cin>>temp1;
+        
+        if(temp1==1){
+            cout<<"Write the element, which you want to add in the end:";
+            cin>>temp;
+            insert(temp);
+            view();}
+        
+        if(temp1==2){
+            int value=0;
+            cout<<"Write the value:";
+            cin>>value;
+            insert(middle_of_list+1,value);
+            view();}
+        int key;
+        cout<<"Write the element, which will delete:";
+        cin>>key;
+        Delete(key);
+        view();
+        cout<<"Will delete the last element:"<<endl;
+        Delete_end();
+        view();
+        int K,z;
+        cout << "Write the number of element:" << endl; 
+        cin >> K; 
+        z = Nomer(K); 
+        insert(K-2,z); 
+        view();
+        int P=0;
+        cout<<"Will remove elements in the end of new list"<<endl;
+        cout<<"Write the number of elements, which will remove=";
+        cin>>P;
+        Perem(P);
+        cout<<"Will divide into 2 lists:"<<endl;
+        Copy();}
+    destroy();
+
+    getchar();
+    return 0;
+}
+
+
+
+
+"func.h"
+
+struct Item
+{
+int data;
+Item *next;
+
+};
+
+Item*root,*cur,*d,*ptr;
+
+void create()    ///////create
+{
+    
+int count;
+cout<<"Write the number of lists:";
+cin>>count;
+if(!count) return;
+root=new Item;
+root->next=NULL;
+cin>>root->data;
+cur=root;
+
+    for(int i=1;i<count;i++)
+{
+cur->next=new Item;
+cur=cur->next;
+cur->next=NULL;
+cin>>cur->data;
+}
+
+}
+
+void view()   //////////////view
+{
+cur=root;
+while(cur)
+{
+cout<<cur->data<<endl;
+cur=cur->next;
+}
+}
+
+void Copy ()    //////////////copy
+{
+cur=root;
+Item *cur_new=NULL;
+Item *tail_new = NULL;
+Item *root_new=NULL;
+Item *cur_new1=NULL;
+Item *tail_new1 = NULL;
+Item *root_new1=NULL;
+while (cur!=NULL)
+{
+if (cur->data>3)
+{
+if (cur_new==NULL)
+{
+cur_new=new Item;
+
+cur_new->data=cur->data;
+cur_new->next=NULL;
+tail_new=cur_new;
+root_new=tail_new;
+}
+else
+{
+tail_new->next = new Item;
+tail_new=tail_new->next;
+tail_new->data=cur->data;
+tail_new->next=NULL;
+}
+}
+cur=cur->next;
+}
+
+cout <<"List < 3:" <<endl;
+cur_new=root_new;
+
+    while (cur_new)
+{
+cout << cur_new->data << endl;
+cur_new=cur_new->next;
+}
+
+//2
+    
+cur=root;
+while (cur!=NULL) {
+if (cur->data<3){
+if (cur_new1==NULL) {
+cur_new1=new Item;
+cur_new1->data=cur->data;
+cur_new1->next=NULL;
+tail_new1=cur_new1;
+root_new1=tail_new1;
+}
+else {
+tail_new1->next = new Item;
+tail_new1=tail_new1->next;
+tail_new1->data=cur->data;
+tail_new1->next=NULL;
+}
+}
+cur=cur->next;
+}
+
+cout << "List:" << endl;
+cur_new1=root_new1;
+while (cur_new1) {
+cout << cur_new1->data << endl;
+cur_new1=cur_new1->next;
+}
+
+}
+    int counter(void)////////////counter
+{
+cur=root;
+int count=0;
+while(cur){
+cur=cur->next;
+count++;
+}
+return count;
+}
+
+    void arif()
+{
+        float temp=0;
+        cur=root;
+        float count=0;
+        while(cur){
+            temp+=cur->data;
+            cur=cur->next;
+            count++;
+}
+cout<<"Avarage:"<<temp/count<<endl;
+}
+
+    void destroy(void) ////////////destroy
+{
+        while(root)
+        {
+            cur=root;
+            root=cur->next;
+            delete cur;
+        }
+}
+
+    void insert(int temp)   ////////////insert
+{
+        //end
+        cur=root;
+        while(cur->next) cur=cur->next;
+        cur->next=new Item;
+        cur=cur->next;
+        cur->next=NULL;
+        cur->data=temp;
+    }
+
+    void insert(int key, int value)   ////////////insert
+
+{
+        cur=root;
+        while(cur->data!=key&&cur) cur=cur->next;
+        if(!cur)
+{
+    cout<<"Key is not found";return;
+}
+        Item *temp;
+        temp= new Item;
+        temp->next=cur->next;
+        temp->data=value;
+        cur->next=temp;
+}
+    
+int Nomer(int K)   ///////////////number of
+{
+    int z=0,q=0;
+    cur=root;
+    while(cur)
+{
+        z++;
+        if (z==K) {q=cur->data; break;}
+        cur=cur->next;}
+    return q;
+}
+    
+
+void Delete(int Number)   /////////////////delete
+{
+        Item *ptr;//вспомогательный указатель
+        Item *cur = root;
+        for (int i = 1; i < Number && cur != NULL; i++)
+            cur = cur->next;
+        if (cur != NULL){//проверка на корректность
+            if (cur == root){//удаляем первый элемент
+        root = root->next;
+        delete(cur);
+        cur = root;
+}
+else {//удаляем непервый элемент
+cur=root;
+while(cur->data!=Number&&cur) cur=cur->next;
+if(!cur){cout<<"Number not found";return;}
+Item *temp=root;
+while (temp->next!=cur)temp=temp->next;
+temp->next=cur->next;
+delete cur;
+}
+}
+}
+
+
+void Perem(int P) ///////////////peremeshenie
+{
+    cur=root;
+    Item *cur_new=NULL;
+    Item *tail_new = NULL;
+    Item *root_new=NULL;
+    while (cur!=NULL)
+{
+        if (cur->data<3)
+{
+            if (cur_new==NULL)
+{
+                cur_new=new Item;
+
+                cur_new->data=cur->data;
+                cur_new->next=NULL;
+                tail_new=cur_new;
+                root_new=tail_new;
+}
+else {
+tail_new->next = new Item;
+tail_new=tail_new->next;
+tail_new->data=cur->data;
+tail_new->next=NULL;
+}
+}
+cur=cur->next;
+}
+
+cur=root;
+for (int i=0;i<P;i++){
+Item *temp=new Item;
+temp->data=cur->data;
+temp->next=NULL;
+if (cur_new==NULL) root_new=temp;
+
+else {
+cur_new=root_new;
+while (cur_new->next!=NULL) {
+cur_new=cur_new->next;
+}
+cur_new->next=temp;
+}
+cur=cur->next;
+}
+cout << "New list:" << endl;
+cur_new=root_new;
+while (cur_new) {
+cout <<cur_new->data << endl;
+cur_new=cur_new->next;
+}
+}
+    
+void Delete_end()  ////////////////
+{
+cur=root;
+while(cur->next!=NULL&&cur){ cur=cur->next;}
+Item *temp=root;
+while (temp->next!=cur)temp=temp->next;
+temp->next=cur->next;
+delete cur;
+}
+
+
+
+
+///////////////////////////////////////////// stack
+
+void create_stack() ///////////////sozdanie steka
+{
+    int count;
+    cout<<"Write the number of lists:";
+    cin>>count;
+    if(!count) return;
+    root=new Item;
+    root->next=NULL;
+    cin>>root->data;
+    cur=root;
+    for(int i=1;i<count;i++){
+        cur->next=new Item;
+        cur=cur->next;
+        cur->next=NULL;
+        cin>>cur->data;
+    }
+}
+
+void view_stack()  ////////////////prosmotr steka
+{
+    cur=root;
+    while(cur){
+        cout<<cur->data<<endl;
+        cur=cur->next;
+    }
+}
+
+void Add_end_stack(int temp)  /////////////////dobavit v konec steka
+
+{
+    cur=root;
+    while(cur->next) cur=cur->next;
+    cur->next=new Item;
+    cur=cur->next;
+    cur->next=NULL;
+    cur->data=temp;
+}
+
+void Delete_end_stack()   ////////////////// delete konec steka2
+{
+    cur=root;
+    while(cur->next!=NULL&&cur){ cur=cur->next;}
+    Item *temp=root;
+    while (temp->next!=cur)temp=temp->next;
+    temp->next=cur->next;
+    delete cur;
+}
