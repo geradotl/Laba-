@@ -1,0 +1,58 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+DNA_SIZE = 1             # ДНК (real number)
+DNA_BOUND = [1, 3]       # граници решений
+N_GENERATIONS = 100
+MUT_STRENGTH = 1.       # размер шага
+
+
+def F(x): return np.sin(10*np.pi*x)/(2*x) + (x - 1)**4     # найти максимум
+
+
+# поиск фитнес функции
+def get_fitness(pred): return pred.flatten()
+
+
+def make_kid(parent):
+    # только мутация
+    k = parent + MUT_STRENGTH * np.random.randn(DNA_SIZE)
+    k = np.clip(k, *DNA_BOUND)
+    return k
+
+
+def kill_bad(parent, kid):
+    global MUT_STRENGTH
+    fp = get_fitness(F(parent))[0]
+    fk = get_fitness(F(kid))[0]
+    p_target = 1/5
+    if fp < fk:     # потомок лучше чем родитель
+        parent = kid
+        ps = 1.     # потомок побеждает -> ps = 1 (успешно скрестились)
+    else:
+        ps = 0.
+    # коректировка шага мутации
+    MUT_STRENGTH *= np.exp(1/np.sqrt(DNA_SIZE+1) * (ps - p_target)/(1 - p_target))
+    return parent
+
+
+parent = 5 * np.random.rand(DNA_SIZE)   # ДНК родителя
+
+plt.ion()       # график
+x = np.linspace(*DNA_BOUND, 200)
+
+for _ in range(N_GENERATIONS):
+    # ES part
+    kid = make_kid(parent)
+    py, ky = F(parent), F(kid)       # график
+    parent = kill_bad(parent, kid)
+
+    # график
+    plt.cla()
+    plt.scatter(parent, py, s=200, lw=0, c='red', alpha=0.5,)
+    plt.scatter(kid, ky, s=200, lw=0, c='blue', alpha=0.5)
+    plt.text(0, -7, 'Mutation strength=%.2f' % MUT_STRENGTH)
+    plt.plot(x, F(x)); plt.pause(0.05)
+
+plt.ioff(); plt.show()
+
