@@ -1,0 +1,212 @@
+//
+//  main.cpp
+//  struct
+//
+//  Created by гера on 16.05.16.
+//  Copyright © 2016 гера. All rights reserved.
+//
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+
+static const char alphanum[] =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+int stringLength = sizeof(alphanum) - 1;
+
+char genRandom()
+{
+    
+    return alphanum[rand() % 26];
+}
+
+
+struct GROUP{
+    int number;
+    int year;
+    string faculty;
+};
+
+struct STUD{
+    string name;
+    GROUP group;
+    int SES[4];
+    
+    float average(){
+        return (SES[0]+SES[1]+SES[2]+SES[3]) / 4;
+    }
+    
+    float averageLes(){
+        return (SES[0]+SES[1]+SES[2]+SES[3]) / 2;
+    }
+};
+
+//struct VECTOR{
+//
+//    int x;
+//    int y;
+//
+//};
+
+int main(int argc, const char * argv[]) {
+//    
+//    VECTOR a;
+//    VECTOR b;
+//    
+//    cout<< "a";
+//    cin >> a.x >> a.y;
+//    cout <<"b";
+//    cin >> b.x >> b.y;
+//    
+//    VECTOR Suma;
+//    
+//    Suma.x=a.x+b.x;
+//    Suma.y=a.y+b.y;
+//    
+//    cout <<"x"<< Suma.x << "y"<< Suma.y;
+    
+    STUD STUD1[10];
+//GROUP YEAR[10];
+//GROUP GNUMBER[10];
+//GROUP FACULTY[10];
+    
+    for(int i=0; i<10; i++){
+
+        STUD1[i].name="";
+        for(int j=0; j<3; j++)
+            STUD1[i].name+=genRandom();
+        
+        
+        for(int j=0; j<10; j++)
+            STUD1[i].group.number=rand()%3 + 1;
+        
+        STUD1[i].group.faculty = "";
+        for(int j=0; j<3; j++)
+            STUD1[i].group.faculty+=genRandom();
+        
+        
+        for(int j=0; j<10; j++)
+            STUD1[i].group.year=rand()%4+1;
+        
+        
+        for(int j=0; j<4; j++)
+            STUD1[i].SES[j]=rand()%7+1;
+//        STUD1[i].name = rand()%250;
+    }
+    
+    
+    
+    ////////////////////////////////// sortirovka imen
+    for(int i=0; i<9; i++)
+        for(int j=i+1; j<10; j++)
+            if(STUD1[i].name.compare( STUD1[j].name) >0)
+            {
+                STUD temp;
+                temp=STUD1[i];
+                STUD1[i]=STUD1[j];
+                STUD1[j]=temp;
+            }
+    for(int i=0; i<10; i++)
+    {
+        cout<<"Name: "<<STUD1[i].name<<" Faculty:"<<STUD1[i].group.faculty<<" Year:"<<STUD1[i].group.year<<" GrupNumber:"<<STUD1[i].group.number
+            <<" Marks: "<< STUD1[i].SES[0]<<" "<< STUD1[i].SES[1]<<" "<< STUD1[i].SES[2]<<" "<< STUD1[i].SES[3]<<'\n';
+    }
+    
+    int count=0;
+    STUD less[10];
+    STUD zadr[10];
+    int beginning[10];
+    
+////////////////////////////////////  poisk zadrov
+    for(int i=0; i<10; i++)
+    {   if(STUD1[i].average() >= 4.2)
+        {
+            zadr[count]=STUD1[i];
+            beginning[count]=i;
+            count++;
+        }
+    }
+   
+    if(count >0)
+        
+    {
+    cout<<"zadri\n";
+/////////////////////////////////////// sortirovka zadrov po srednemu balu
+        for(int i=0; i<count-1; i++)
+        for(int j=i+1; j< count; j++)
+        if(zadr[i].average()<zadr[j].average())
+        {
+            STUD temp;
+            temp = zadr[i];
+            zadr[i]=zadr[j];
+            zadr[j]=temp;
+            
+/////////////////////////////////////////kakim zadr bul do sortirovki
+            int t;
+            t=beginning[i];
+            beginning[i]=beginning[j];
+            beginning[j]=t;
+        }
+    
+        
+        for(int i=0; i<count; i++){
+    cout<< beginning[i] <<" "<<zadr[i].name<<" "<< zadr[i].SES[0]<<" "<< zadr[i].SES[1]<<" "<< zadr[i].SES[2]<<" "<< zadr[i].SES[3]<<'\n';
+            
+    }
+   /////////////////////////////////////////////////////////////////////////
+
+
+        
+//        for(int i=0; i<10; i++)
+//        {   if(STUD1[i].SES[i].average() <=4)
+//            {
+//            less[count]=STUD1[i];
+//            beginning[count]=i;
+//            count++;
+//            }
+//        }
+
+        
+        
+        
+        
+        
+//        
+//        for(int i=0; i<10; i++)
+//        {   if(STUD1[i].average() <=4)
+//        {
+//            less[count]=STUD1[i];
+//            beginning[count]=i;
+//            count++;
+//        }
+//        }
+//        
+//        
+//        for(int i=0; i<count-1; i++)
+//            for(int j=i+1; j< count; j++)
+//                if(less[i].average()<less[j].average())
+//                {
+//                    STUD temp;
+//                    temp = less[i];
+//                    less[i]=less[j];
+//                    less[j]=temp;
+//                    
+//                   
+//                    int t;
+//                    t=beginning[i];
+//                    beginning[i]=beginning[j];
+//                    beginning[j]=t;
+//                }
+//
+//        
+//        
+//   cout << "other students:\n";
+//        
+//        for(int i=0; i<10; i++){
+//            cout <<beginning[i] <<" "<< less[i].name <<" "<< STUD1[i].SES[0]<<" "<< STUD1[i].SES[1]<<" "<< STUD1[i].SES[2]<<" "<< STUD1[i].SES[3]<<'\n';
+//    };
+    return 0;
+    }}
