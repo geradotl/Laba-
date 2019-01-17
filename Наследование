@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+#include <map>
+#include <list>
+
+using namespace std;
+
+class A1
+    {
+    public:
+    int a1;
+    A1(){a1=0;cout<<"create A1 \n";};
+    A1(int _a1){cout<<"create A1 \n";a1=_a1;};
+    ~A1(){cout<<"Destroy A1 \n";}
+    };
+class A2: public A1
+    {
+    public:
+    int a2;
+    A2(){a2=0;cout<<"create A2 \n";};
+    A2(int _a2){cout<<"create A2 \n";a2=_a2;};
+    ~A2(){cout<<"Destroy A2 \n";}
+    };
+class B1
+    {
+    public:
+    int b1;
+    B1(){b1=0;cout<<"create B1 \n";};
+    B1(int _b1){cout<<"create B1 \n";b1=_b1;};
+    ~B1(){cout<<"Destroy B1 \n";}
+    };
+class B2:public B1
+    {
+    public:
+    int b2;
+    B2(){b2=0;cout<<"create B2 \n";};
+    B2(int _b2){cout<<"create B2 \n";b2=_b2;};
+    ~B2(){cout<<"Destroy B2 \n";}
+    };
+class C1:public virtual A2, public virtual B1
+{
+    public:
+    int c1;
+    C1(){c1=0;cout<<"create C1 \n";};
+    C1(int _c1){cout<<"create C1 \n";c1=_c1;};
+    ~C1(){cout<<"Destroy C1 \n";};
+};
+
+class C2: public virtual A2,public C1,public B2
+    {
+    public:
+        int c2;
+        C2(){c2=0;cout<<"create C2 \n";};
+        C2(int _c2){cout<<"create C2 \n";c2=_c2;};
+        ~C2(){cout<<"Destroy C2 \n";}
+};
+
+
+int main()
+{
+    C2 t=C2(3);
+    
+};
