@@ -1,0 +1,111 @@
+//
+//  main.cpp
+//  C++
+//
+//  Created by гера on 02.02.17.
+//  Copyright © 2017 GeorgeBur. All rights reserved.
+//
+
+#include <iostream>
+
+#define XCOR 10
+#define YCOR 10
+
+int X, Y;
+int move_X,move_Y;
+
+bool exit_flag;
+
+using namespace std;
+
+char map[ XCOR][ YCOR];
+
+void init_map(){
+    for (int i=0; i<XCOR; i++) {
+        for (int j=0; j<YCOR; j++)
+        {
+            map[i][j] = rand() %100 <20 ? '#' : ' ';
+        }
+    }
+}
+void draw_map(){
+    for (int i=0; i<XCOR; i++) {
+        for (int j=0; j<YCOR; j++) {
+            if (i==X && j==Y) {
+                cout<<'@';
+            }else
+            cout<<map[i][j];
+        }
+        cout<<endl;
+    }
+}
+
+
+void init_pers(){
+    do {
+        X = rand() %10;
+        Y = rand() %10;
+    } while (map[X][Y] !=' ');
+    
+}
+
+
+
+void input(){
+    
+    move_X=move_Y=0;
+    
+    
+    char ch;
+    cin>>ch;
+    
+    switch (ch) {
+        case 'e':
+            exit_flag=false;
+            break;
+        case 's':
+            move_X++;
+            break;
+            
+        case 'a':
+            move_Y--;
+            break;
+            
+        case 'w':
+            move_X--;
+            break;
+            
+        case 'd':
+            move_Y++;
+            break;
+            
+            
+            
+            
+        default:
+            break;
+    }
+    
+    if(X+move_X>=0 && X+move_X<XCOR &&   Y+move_Y>=0 &&Y+move_Y<YCOR && map[X+move_X][Y+move_Y] == ' ')
+    {X+=move_X; Y+=move_Y;}
+}
+
+int main(int argc, const char * argv[])
+{
+   srand(static_cast<unsigned int>(time(0)));
+    //init game
+    init_map();
+    init_pers();
+    
+    draw_map();
+    
+    //game loop
+    exit_flag = true;
+    while(exit_flag){
+        input();
+        for (int i=17; i>0; i--) {
+            cout<<endl;
+        }
+        draw_map();
+    }
+}
