@@ -11,8 +11,6 @@
 using namespace std;
 
 
-
-
 class Laba1
 {
 public:
